@@ -122,14 +122,13 @@ class CustomUserViewSet(
     @action(
         ["POST", "DELETE"],
         detail=True,
-        permission_classes=[IsAuthorOrAdminOrReadOnly],
+        permission_classes=[],
     )
     def subscribe(self, request, **kwargs):
         return post_and_delete_action(
             self, request, User, Subscription, SubscriptionSerializer, **kwargs
         )
 
-from rest_framework.permissions import AllowAny
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
@@ -140,7 +139,7 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
 
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
-    permission_classes = [AllowAny, ]
+    permission_classes = [IsAuthorOrAdminOrReadOnly, ]
     pagination_class = CustomPagination
     filter_backends = (DjangoFilterBackend, )
     filterset_class = RecipeFilter
