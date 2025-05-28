@@ -1,4 +1,43 @@
-Находясь в папке infra, выполните команду docker-compose up. При выполнении этой команды контейнер frontend, описанный в docker-compose.yml, подготовит файлы, необходимые для работы фронтенд-приложения, а затем прекратит свою работу.
+ # Запуск
+ Для запуска проекта необходимо создать файл .env и заполнить его аналогично .env_example
 
-По адресу http://localhost изучите фронтенд веб-приложения, а по адресу http://localhost/api/docs/ — спецификацию API.
+# Доступно два варианта запуска
+## USE_TEST_BASE=True
+В этом случае проект запустится с базой данных sqlite на которой будут присутствовать тестовые данные.
+Уже созданы следущие аккаунты
+0. admin
+Почта: admin@example.com
+Пароль: admin
 
+1. Иван Петров
+Никнейм: IvanTheGreat
+Почта: ivan.petrov@example.com
+Пароль: Petrov123!
+
+2. Елена Смирнова
+Никнейм: LenaSmile
+Почта: elena.smirnova@testmail.com
+Пароль: SmirnovaE2024
+
+3. Алексей Козлов
+Никнейм: Kozel_Alex
+Почта: alex.kozlov@demo.org
+Пароль: Kozlov$$99
+
+4. Мария Иванова
+Никнейм: MashaMagic
+Почта: maria.ivanova@fakeinbox.com
+Пароль: Masha12345
+
+5. Дмитрий Соколов
+Никнейм: SokolDima
+Почта: dmitry.sokolov@temp-mail.net
+Пароль: Sokol!D2024
+
+6. Анна Кузнецова
+Никнейм: AnnaKuz
+Почта: anna.kuznetsova@mockbox.org
+Пароль: KuzAnna!777
+
+## USE_TEST_BASE=False
+В данном случае тестовой базы нет, проект работает на postgresql. В базе присутствуют только админ и ингредиенты.
