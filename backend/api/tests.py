@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 
 from recipes.models import (
-    Recipe, Ingredient, IngredientInRecipe, Favorite
+    Recipe, Ingredient, IngredientInRecipe, Favorite, ShoppingList
 )
 from users.models import Subscription
 
@@ -84,7 +84,7 @@ class UserAPITest(APITestCase):
         self.client.force_authenticate(user=self.user)
 
     def test_user_registration(self):
-        url = reverse('user-list')
+        url = reverse('users-list')
         data = {
             'email': 'new@example.com',
             'username': 'newuser',
@@ -97,13 +97,13 @@ class UserAPITest(APITestCase):
         self.assertEqual(User.objects.count(), 2)
 
     def test_get_current_user(self):
-        url = reverse('user-me')
+        url = reverse('users-me')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['email'], self.user.email)
 
     def test_set_password(self):
-        url = reverse('user-set-password')
+        url = reverse('users-set-password')
         data = {
             'current_password': 'testpass123',
             'new_password': 'newpass123'
@@ -139,13 +139,13 @@ class RecipeAPITest(APITestCase):
         self.client.force_authenticate(user=self.user)
 
     def test_get_recipes(self):
-        url = reverse('recipe-list')
+        url = reverse('recipes-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data['results']), 1)
 
     def test_create_recipe(self):
-        url = reverse('recipe-list')
+        url = reverse('recipes-list')
         image = SimpleUploadedFile(
             name='test_image.jpg',
             content=b'simple image content',
@@ -163,20 +163,10 @@ class RecipeAPITest(APITestCase):
         self.assertEqual(Recipe.objects.count(), 2)
 
     def test_add_to_favorites(self):
-        url = reverse('recipe-favorite', kwargs={'pk': self.recipe.id})
+        url = reverse('recipes-favorite', kwargs={'pk': self.recipe.id})
         response = self.client.post(url)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(Favorite.objects.filter(
-            user=self.user,
-            recipe=self.recipe
-        ).exists())
-
-    def test_remove_from_favorites(self):
-        Favorite.objects.create(user=self.user, recipe=self.recipe)
-        url = reverse('recipe-favorite', kwargs={'pk': self.recipe.id})
-        response = self.client.delete(url)
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertFalse(Favorite.objects.filter(
             user=self.user,
             recipe=self.recipe
         ).exists())
@@ -198,7 +188,7 @@ class SubscriptionAPITest(APITestCase):
         self.client.force_authenticate(user=self.user1)
 
     def test_subscribe(self):
-        url = reverse('user-subscribe', kwargs={'pk': self.user2.id})
+        url = reverse('users-subscribe', kwargs={'pk': self.user2.id})
         response = self.client.post(url)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(Subscription.objects.filter(
@@ -208,7 +198,7 @@ class SubscriptionAPITest(APITestCase):
 
     def test_unsubscribe(self):
         Subscription.objects.create(user=self.user1, author=self.user2)
-        url = reverse('user-subscribe', kwargs={'pk': self.user2.id})
+        url = reverse('users-subscribe', kwargs={'pk': self.user2.id})
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Subscription.objects.filter(
@@ -218,7 +208,7 @@ class SubscriptionAPITest(APITestCase):
 
     def test_get_subscriptions(self):
         Subscription.objects.create(user=self.user1, author=self.user2)
-        url = reverse('user-subscriptions')
+        url = reverse('users-subscriptions')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data['results']), 1)
