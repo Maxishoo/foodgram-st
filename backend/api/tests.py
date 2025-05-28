@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 
 from recipes.models import (
-    Recipe, Ingredient, IngredientInRecipe, Favorite, ShoppingList
+    Recipe, Ingredient, IngredientInRecipe, Favorite
 )
 from users.models import Subscription
 
