@@ -5,9 +5,6 @@
 ## USE_TEST_BASE=True
 В этом случае проект запустится с базой данных sqlite на которой будут присутствовать тестовые данные.
 Уже созданы следущие аккаунты
-0. admin
-Почта: admin@example.com
-Пароль: admin
 
 1. Иван Петров
 Никнейм: IvanTheGreat
@@ -38,6 +35,10 @@
 Никнейм: AnnaKuz
 Почта: anna.kuznetsova@mockbox.org
 Пароль: KuzAnna!777
+
+7. admin
+Почта: admin@example.com
+Пароль: admin
 
 ## USE_TEST_BASE=False
 В данном случае тестовой базы нет, проект работает на postgresql. В базе присутствуют только админ и ингредиенты.
