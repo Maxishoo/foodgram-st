@@ -41,7 +41,7 @@ jobs:
         echo "DB_HOST=db" >> .env
         echo "DB_PORT=5432" >> .env
         echo "USE_TEST_BASE=False" >> .env
-        echo "SECRET_KEY="django-insecure-e0zm$#7m&b2*ysgy0d@z*&oazx5vjx*f=-ui@ulrsnq5yuanh%"" >> .env
+        echo "SECRET_KEY=django-insecure-default-key" >> .env
         cat .env
     - name: Install dependencies
       run: |
